@@ -1,1 +1,25 @@
-<p>home-carrusel works!</p>
+<swiper-container init="false" #SwiperCarrousel>
+  <swiper-slide>
+    <div class="h-150 w-full relative">
+      <div class="w-full h-full absolute z-1 bg-green-400"></div>
+      <div class="w-[50%] h-full p-20 absolute inset-y-0 left-0 bg-linear-to-r from-[#122941]/80 to-transparent pointer-events-none z-10">
+        <section class="ml-10">
+          <h1 class="font-bold text-3xl">CELEBRAMOS EL DIA DE LA MUJER CON IMPORTANTES ACTIVIDADES!</h1>
+          <p>Febrero 16, 2026</p>
+          <p class="my-4 h-auto line-clamp-4 wrap-break-word md:my-10 md:line-clamp-6 ">Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T.
+            persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
+          </p>
+          <button class="bg-[#F0C761] px-6 py-2 font-bold rounded-[15%]">Ver más</button>
+        </section>
+      </div>
+    </div>
+  </swiper-slide>
+  <swiper-slide>
+    <div class="bg-red-400 h-150 w-full">
+    </div>
+  </swiper-slide>
+  <swiper-slide>
+    <div class="bg-blue-500 h-150 w-full">
+    </div>
+  </swiper-slide>
+</swiper-container>
