@@ -20,6 +20,23 @@ export class HomeCarrusel implements OnInit {
   ngOnInit(){
     //Inicializacion de propiedades de carrusel
     const opcionesSwiper: SwiperOptions = {
+      injectStyles:[
+        `
+        :host {
+          --swiper-navigation-color: gray;
+        }
+        .swiper-button-next,
+        .swiper-button-prev{
+          opacity:0.2;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover{
+          opacity:0.5;
+        }
+
+        `
+      ],
       slidesPerView: 1,
       speed:500,
       loop: true,
