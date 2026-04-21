@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Observable, of } from 'rxjs';
 import { DocumentosService } from '../services/documentos.service';
@@ -15,15 +15,30 @@ export class Documentos {
 
   //Atributos
 
-  tipoDocumentos = ["Documentacion legal","Comunicaciones internas","Protocolos de seguridad"];
-
+  filtroSeleccionado = signal<string>('Todos'); // 'Todos' significa sin filtro específico
+  menuFiltrosAbierto = signal<boolean>(false); // Para controlar el menu de tipos
 
   documentosService = inject(DocumentosService);
 
-  documentosDataComputed = computed(()=>{
-    const data: documentosInterface[] | undefined= this.documentosService.recursoDocumentos.value();
-    return (!data)? []: this.organizarDocumentos(data);
-  })
+  // Filtrar tipos unicos con Set de js mediante datos de Firebase
+  tipoDocumentos = computed(() => {
+    const data = this.documentosService.recursoDocumentos.value();
+    if (!data) return ['Todos'];
+    const tipos = new Set(data.map(d => d.tipo));
+    return ['Todos', ...Array.from(tipos)];
+  });
+
+  documentosDataComputed = computed(() => {
+    let data: documentosInterface[] | undefined = this.documentosService.recursoDocumentos.value();
+    if (!data) return [];
+
+    // Aplicamos el filtro de tipo
+    if (this.filtroSeleccionado() !== 'Todos') {
+      data = data.filter(d => d.tipo === this.filtroSeleccionado());
+    }
+
+    return this.organizarDocumentos(data);
+  });
 
 
   //Metodos
@@ -35,10 +50,11 @@ export class Documentos {
    * @param { documentosInterface[] } data - Data de documentos de firebase.
    * @returns {documentosClasificados[]} - Devuelve un array de documentos organizados
    */
-  organizarDocumentos(data: documentosInterface[]): documentosClasificados[]{
-    const dataDocumentos:documentosClasificados[] = [];
-    const documentos = data.reduce((acum, actual)=>{
-      if(!acum[actual.tipo]){
+  organizarDocumentos(data: documentosInterface[]): documentosClasificados[] {
+    const dataDocumentos: documentosClasificados[] = [];
+    const documentos = data.reduce((acum, actual) => {
+
+      if (!acum[actual.tipo]) {
         acum[actual.tipo] = [];
       }
       acum[actual.tipo].push(actual);
@@ -46,8 +62,8 @@ export class Documentos {
 
     }, {} as Record<string, documentosInterface[]>)
 
-    for (let clave in documentos){
-      dataDocumentos.push({tipo: clave, documentos: documentos[clave]})
+    for (let clave in documentos) {
+      dataDocumentos.push({ tipo: clave, documentos: documentos[clave] })
     }
     return dataDocumentos
   };
@@ -61,22 +77,22 @@ export class Documentos {
     try {
       // Intentamos descargarlo en segundo plano para forzar el guardado y no solo la previsualización
       const response = await fetch(url);
-      
+
       if (!response.ok) throw new Error("Fallo en red o CORS");
 
       const blob = await response.blob();
       const objectUrl = window.URL.createObjectURL(blob);
-      
+
       const a = document.createElement('a');
       a.href = objectUrl;
       // Validamos no repetir ".pdf.pdf"
       a.download = nombreAgregado.toLowerCase().endsWith('.pdf') ? nombreAgregado : `${nombreAgregado}.pdf`;
-      
+
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(objectUrl);
-      
+
     } catch (error) {
       console.warn('Política del servidor previene descarga forzosa directa. Abriendo en nueva pestaña...', error);
       // Fallback seguro: Que el navegador decida abrirlo o descargarlo directo

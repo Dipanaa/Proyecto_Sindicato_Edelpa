@@ -19,9 +19,10 @@
     @if(dataSubCarpetasFiltradas()){
     @for(item of dataSubCarpetasFiltradas(); track $index ){
     <div [routerLink]="['/galeria', item.nombre.toLowerCase()]" appAnimarEnScroll="animate__fadeInLeft"
+      [style.animation-delay]="($index * 150) + 'ms'"
       class="group relative cursor-pointer overflow-hidden rounded-4xl shadow-lg transition-transform hover:-translate-y-2">
 
-      <img src="../../assets/imgs/testimg01.jpg" class="h-62.5 w-full object-cover">
+      <img src="{{item.urlPortada}}" class="h-62.5 w-full object-cover">
 
       <div class="absolute bottom-4 left-4 right-4 md:right-auto">
         <div class="bg-white p-3 rounded-xl shadow-md text-left inline-block">

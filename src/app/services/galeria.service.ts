@@ -23,14 +23,18 @@ import { GaleriaInterface, CategoriaConteo, subCarpetaImagenes } from '../interf
 export class GaleriaService {
 
   private firestore: Firestore = inject(Firestore);
+
+
   //Recursos
   //Metodos
-
   /**
-   * TODO: Revisar implementacion en base a sub carpetas
    * Obtiene una página de imágenes usando Observables.
    */
-  obtenerImagenesPaginadas(nombreCarpeta: string, limite: number, ultimoDoc: QueryDocumentSnapshot<DocumentData> | null): Observable<{ data: GaleriaInterface[], lastVisible: QueryDocumentSnapshot<DocumentData> | null }> {
+  obtenerImagenesPaginadas(nombreCarpeta: string, limite: number,
+    ultimoDoc: QueryDocumentSnapshot<DocumentData> | null): Observable<{
+      data: GaleriaInterface[],
+      lastVisible: QueryDocumentSnapshot<DocumentData> | null
+    }> {
     const coleccionRef = collection(this.firestore, 'galeria');
     const reglas: any[] = [limit(limite)];
 
@@ -52,37 +56,6 @@ export class GaleriaService {
     );
   }
 
-  /**
-   * Recurso reactivo para obtener los conteos de un set de categorías.
-   */
-  public recursoConteosCategorias(categorias: string[]) {
-    return rxResource({
-      loader: () => this.obtenerConteosPorCategoria(categorias)
-    });
-  }
-
-  /**
-   * Obtiene la cantidad de documentos por cada categoría enviada.
-   */
-  obtenerConteosPorCategoria(categorias: string[]): Observable<CategoriaConteo[]> {
-
-    return defer(() => {
-      const conteos$ = categorias.map(cat => {
-        const q = cat === 'Todos'
-          ? collection(this.firestore, 'galeria')
-          : query(collection(this.firestore, 'galeria'), where('tipo', '==', cat.toLowerCase()));
-
-        return from(getCountFromServer(q)).pipe(
-          map(snapshot => ({
-            nombre: cat,
-            cantidad: snapshot.data().count
-          }))
-        );
-      });
-
-      return forkJoin(conteos$);
-    })
-  }
 
   /**
    * Obtiene las imágenes de una sección específica (sin paginación).

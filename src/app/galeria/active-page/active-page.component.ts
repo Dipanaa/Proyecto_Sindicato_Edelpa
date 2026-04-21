@@ -29,12 +29,15 @@ export class ActivePage implements OnInit, OnDestroy {
   ultimoDoc = signal<QueryDocumentSnapshot<DocumentData> | null>(null);
   cargando = signal<boolean>(false);
   hayMas = signal<boolean>(true);
+  qrUrl = signal<string | null>(null);
+  qrModalOpen = signal<boolean>(false);
 
   private lightbox: PhotoSwipeLightbox | null = null;
 
   ngOnInit() {
     this.resetGallery(this.sectionName());
     this.initLightbox();
+    this.cargarQrUrl(this.sectionName());
   }
 
   ngOnDestroy() {
@@ -53,6 +56,17 @@ export class ActivePage implements OnInit, OnDestroy {
     this.lightbox.init();
   }
 
+  async cargarQrUrl(section: string) {
+    try {
+      const carpetas = await this.galeriaService.obtenerSubCarpetasImagenes();
+      const carpeta = carpetas.find(c => c.nombre.toLowerCase() === section.toLowerCase());
+      if (carpeta && carpeta.urlQrCodigo) {
+        this.qrUrl.set(carpeta.urlQrCodigo);
+      }
+    } catch (e) {
+      console.error('Error cargando QR:', e);
+    }
+  }
 
   //Reseteo de la galeria de imagenes
   resetGallery(section: string) {

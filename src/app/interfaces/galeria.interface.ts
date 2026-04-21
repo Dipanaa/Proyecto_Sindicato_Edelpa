@@ -15,4 +15,7 @@ export interface subCarpetaImagenes {
   cantImagenes: number;
   nombre: string;
   tipo: string;
+  urlQrCodigo: string;
+  urlPortada: string;
+
 }

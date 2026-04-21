@@ -19,25 +19,50 @@
     </div>
   </div>
 
-  <div class="mb-8 border-b border-gray-100 pb-8" appAnimarEnScroll="animate__fadeIn">
-    <button
-      class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition">
-      Tipo
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
+  <div class="mb-8 border-b border-gray-100 pb-8 relative z-10" appAnimarEnScroll="animate__fadeIn">
+    @if(menuFiltrosAbierto()) {
+    <div class="fixed inset-0 z-10" (click)="menuFiltrosAbierto.set(false)"></div>
+    }
+
+    <div class="relative inline-block text-left z-20">
+      <button (click)="menuFiltrosAbierto.set(!menuFiltrosAbierto())"
+        class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition cursor-pointer">
+        {{ filtroSeleccionado() === 'Todos' ? 'Tipo' : filtroSeleccionado() }}
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200"
+          [class.rotate-180]="menuFiltrosAbierto()" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      @if(menuFiltrosAbierto()) {
+      <div
+        class="absolute left-0 z-30 mt-2 w-56 rounded-xl bg-white shadow-xl ring-1 ring-black/5 focus:outline-none overflow-hidden origin-top-left animate__animated animate__fadeIn animate__faster">
+        <div class="py-1">
+          @for (tipo of tipoDocumentos(); track $index) {
+          <button (click)="filtroSeleccionado.set(tipo); menuFiltrosAbierto.set(false)"
+            class="block w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-gray-50 cursor-pointer"
+            [class.bg-gray-50]="filtroSeleccionado() === tipo"
+            [class.text-edelpa-primary]="filtroSeleccionado() === tipo"
+            [class.font-semibold]="filtroSeleccionado() === tipo" [class.text-gray-700]="filtroSeleccionado() !== tipo">
+            {{ tipo }}
+          </button>
+          }
+        </div>
+      </div>
+      }
+    </div>
   </div>
 
   @if(documentosService.recursoDocumentos.hasValue()){
 
   <div class="space-y-6">
     @for (tipos of documentosDataComputed(); track $index) {
-    <section class="bg-[#f1f3f5] rounded-2xl p-8" appAnimarEnScroll="animate__fadeInUp">
+    <section class="bg-[#f1f3f5] rounded-2xl p-8" appAnimarEnScroll="animate__fadeInUp" [style.animation-delay]="($index * 150) + 'ms'">
       <h2 class="text-2xl font-bold text-[#334155] mb-8">{{tipos.tipo}}</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         @for (docs of tipos.documentos; track $index){
         <div class="flex items-start gap-4 cursor-pointer group" (click)="descargarPdf(docs.url, docs.nombre)"
+          appAnimarEnScroll="animate__fadeInUp" [style.animation-delay]="($index * 100) + 'ms'"
           title="Hacer clic para descargar">
           <div class="shrink-0 relative">
             <div

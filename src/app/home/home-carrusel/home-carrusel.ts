@@ -22,7 +22,7 @@ import { AvisosService, Aviso } from '../../services/avisos.service';
 })
 export class HomeCarrusel implements OnInit {
   listaAvisos: Aviso[] = [];
-  
+
   private avisosService = inject(AvisosService);
   private cdr = inject(ChangeDetectorRef);
 
@@ -54,6 +54,7 @@ export class HomeCarrusel implements OnInit {
       speed: 500,
       loop: true,
       navigation: true,
+      autoplay: true
     };
 
     if (this.SwiperCarrousel) {
@@ -63,7 +64,7 @@ export class HomeCarrusel implements OnInit {
     this.avisosService.getAvisos().subscribe((avisos) => {
       this.listaAvisos = avisos;
       this.cdr.markForCheck();
-      
+
       // Init or update swiper once DOM is updated
       setTimeout(() => {
         if (this.SwiperCarrousel && !this.SwiperCarrousel.nativeElement.swiper) {

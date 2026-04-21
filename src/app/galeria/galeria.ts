@@ -19,7 +19,7 @@ export class Galeria {
   router = inject(Router);
 
   //Atributos
-  categorias: string[] = ['todos', 'paseos', 'cumpleaños', 'fiestas patrias', 'navidad', 'deportes'];
+  categorias: string[] = ['todos', 'deportivo', 'sindicato', 'bienestar'];
   cargaSubCarpetas = false;
   dataSubCarpetas = signal<subCarpetaImagenes[] | null>(null);
   categoriaActiva = signal<string>('todos');
