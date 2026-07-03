@@ -51,28 +51,34 @@ export class HomeCarrusel implements OnInit {
         `,
       ],
       slidesPerView: 1,
-      speed: 500,
+      speed: 1200,
       loop: true,
       navigation: true,
       autoplay: true
     };
 
+
+    //Asignacion de slides de carrusel con opciones
     if (this.SwiperCarrousel) {
       Object.assign(this.SwiperCarrousel!.nativeElement, opcionesSwiper);
     }
 
-    this.avisosService.getAvisos().subscribe((avisos) => {
-      this.listaAvisos = avisos;
-      this.cdr.markForCheck();
+    //Inicializamos las imagenes del carrusel
+    this.SwiperCarrousel!.nativeElement.initialize();
 
-      // Init or update swiper once DOM is updated
-      setTimeout(() => {
-        if (this.SwiperCarrousel && !this.SwiperCarrousel.nativeElement.swiper) {
-          this.SwiperCarrousel.nativeElement.initialize();
-        } else if (this.SwiperCarrousel?.nativeElement.swiper) {
-          this.SwiperCarrousel.nativeElement.swiper.update();
-        }
-      });
-    });
+    //Carga de avisos de manera dinamica y por API pero ahora estamos por
+    // this.avisosService.getAvisos().subscribe((avisos) => {
+    //   console.log("pasamos por aca");
+    //   this.listaAvisos = avisos;
+    //   this.cdr.markForCheck();
+
+    //   setTimeout(() => {
+    //     if (this.SwiperCarrousel && !this.SwiperCarrousel.nativeElement.swiper) {
+    //       this.SwiperCarrousel.nativeElement.initialize();
+    //     } else if (this.SwiperCarrousel?.nativeElement.swiper) {
+    //       this.SwiperCarrousel.nativeElement.swiper.update();
+    //     }
+    //   });
+    // });
   }
 }
