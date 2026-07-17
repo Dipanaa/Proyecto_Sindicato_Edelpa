@@ -49,11 +49,9 @@ export class Galeria {
     this.cargaSubCarpetas = true;
 
     this.galeriaService.obtenerSubCarpetasImagenes().then(data => {
-      console.log(data);
       this.dataSubCarpetas.set(data);
       this.cargaSubCarpetas = false;
     }).catch(err => {
-      console.log(err);
     });
   }
 

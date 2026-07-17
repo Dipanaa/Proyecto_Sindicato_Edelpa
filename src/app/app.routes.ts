@@ -6,6 +6,7 @@ import { Galeria } from './galeria/galeria';
 import { Deporte } from './deporte/deporte';
 import { Bienestar } from './bienestar/bienestar';
 import { Documentos } from './documentos/documentos';
+import { Caja18 } from './caja-18/caja-18.component';
 
 export const routes: Routes = [
   {
@@ -32,6 +33,8 @@ export const routes: Routes = [
       { path: 'deporte', component: Deporte },
       { path: 'bienestar', component: Bienestar },
       { path: 'documentos', component: Documentos },
+      { path: 'caja18', component: Caja18 }
+
     ],
   },
   { path: '**', redirectTo: 'home' },

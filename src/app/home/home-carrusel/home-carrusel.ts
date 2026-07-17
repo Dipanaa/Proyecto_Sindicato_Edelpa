@@ -68,7 +68,6 @@ export class HomeCarrusel implements OnInit {
 
     //Carga de avisos de manera dinamica y por API pero ahora estamos por
     // this.avisosService.getAvisos().subscribe((avisos) => {
-    //   console.log("pasamos por aca");
     //   this.listaAvisos = avisos;
     //   this.cdr.markForCheck();
 

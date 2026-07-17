@@ -2,8 +2,6 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import { register } from 'swiper/element/bundle';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 
 //Inicializacion de Swiper
 register();
@@ -34,8 +32,8 @@ bootstrapApplication(AppComponent, appConfig)
       container.querySelectorAll('.reveal').forEach(el => {
         const htmlEl = el as HTMLElement;
         if (!htmlEl.style.visibility) {
-           htmlEl.style.visibility = 'hidden';
-           intersectionObserver.observe(htmlEl);
+          htmlEl.style.visibility = 'hidden';
+          intersectionObserver.observe(htmlEl);
         }
       });
     };

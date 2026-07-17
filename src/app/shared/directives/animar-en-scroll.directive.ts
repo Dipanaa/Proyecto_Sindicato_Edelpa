@@ -22,7 +22,6 @@ export class AnimarEnScrollDirective implements OnInit, OnDestroy {
     };
 
     this.observer = new IntersectionObserver((entries) => {
-      console.log("aplicado");
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           // Remover opacidad manual para que la clase animate.css la controle
